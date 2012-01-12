@@ -1,0 +1,23 @@
+I am developing a big web application in PHP, and recently switch to
+IntelliJ. IntelliJ offers the possibility to do remote debugging with
+XDebug, which was pretty easy to set up. Starting a request with
+?XDEBUG_SESSION_START=intellij appended to the url starts off a remote
+connection from PHP to the listening IntelliJ debugger.
+
+However, I am using a dispatcher pattern in PHP to route single
+requests to different OO-handlers, REST handlers as well as static
+handlers that serve the Javascript, CSS and images. Each of these
+requests would trigger a back connection to IntelliJ, which slowed
+down everything and proved to be pretty annoying. I want to remove
+certain areas of the website from the Xdebug remote debugging. This
+wasn't so easy, as there is no "exclude" option either in the XDebug
+toggler plugins or XDebug itself.
+
+Xdebug looks for a cookie called XDEBUG_SESSION, which is used to
+initiate the back connection. The value is the idekey which is used to
+differentiate between different listening debuggers. I wasn't able to
+go around this by setting it to an empty value for the resources I
+wanted to exclude. However, using a non-sense key seemed to work. I
+thus added the following code to my application:
+
+<script src="https://gist.github.com/1600897.js?file=dispatch"></script>
